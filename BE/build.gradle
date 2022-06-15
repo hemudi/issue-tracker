@@ -1,5 +1,5 @@
 plugins {
-	id 'org.springframework.boot' version '2.6.6'
+	id 'org.springframework.boot' version '2.7.0'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
 }
@@ -28,6 +28,9 @@ dependencies {
 	// Lombok
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
+
+	// Configuration
+	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
 	// test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
