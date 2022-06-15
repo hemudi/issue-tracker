@@ -5,6 +5,7 @@ import lombok.Getter;
 import org.codesquad.team34.issuetracker.auth.OAuthCredential;
 import org.codesquad.team34.issuetracker.auth.OAuthProperties;
 import org.codesquad.team34.issuetracker.auth.OAuthProviders;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -26,6 +27,16 @@ public class GithubOAuthClient {
             .bodyValue(new AuthorizationGrant(code))
             .retrieve()
             .bodyToMono(GithubAccessToken.class)
+            .block();
+    }
+
+    public GithubUserProfile getUserProfile(GithubAccessToken accessToken) {
+        return WebClient.create(oAuthCredential.getUserProfilePath())
+            .get()
+            .accept(MediaType.parseMediaType("application/vnd.github.v3+json"))
+            .header(HttpHeaders.AUTHORIZATION, accessToken.toHeaderValue())
+            .retrieve()
+            .bodyToMono(GithubUserProfile.class)
             .block();
     }
 

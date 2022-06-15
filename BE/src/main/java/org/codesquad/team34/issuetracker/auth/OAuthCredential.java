@@ -15,6 +15,7 @@ public class OAuthCredential {
     private final String authorizationPath;
     private final String redirectPath;
     private final String accessTokenPath;
+    private final String userProfilePath;
 
     // client credentials
     private final String clientId;

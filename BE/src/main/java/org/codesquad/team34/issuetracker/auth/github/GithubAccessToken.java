@@ -21,4 +21,8 @@ public class GithubAccessToken {
         this.scope = scope;
         this.tokenType = tokenType;
     }
+
+    public String toHeaderValue() {
+        return "token " + accessToken;
+    }
 }
