@@ -1,6 +1,7 @@
 package org.codesquad.team34.issuetracker.auth.github;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Getter;
 import org.codesquad.team34.issuetracker.auth.OAuthCredential;
 import org.codesquad.team34.issuetracker.auth.OAuthProperties;
@@ -42,15 +43,11 @@ public class GithubOAuthClient {
     }
 
     @Getter
+    @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
     private class AuthorizationGrant {
 
-        @JsonProperty("client_id")
         private final String clientId = oAuthCredential.getClientId();
-
-        @JsonProperty("client_secret")
         private final String clientSecret = oAuthCredential.getClientSecret();
-
-        @JsonProperty("code")
         private final String code;
 
         public AuthorizationGrant(String code) {
