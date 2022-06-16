@@ -1,0 +1,18 @@
+spring:
+
+  # DB 연동 전 임시로 데이터소스 자동설정을 막아 둠
+  # Spring Boot 2.6.6에서는 에러가 탐지되지 않음
+  # Spring Boot 2.7.0에서는 Cannot resolve {클래스 이름} for key '{패키지 생략}.EnableAutoConfiguration'
+  # 에러가 탐지되나, 실제 동작에는 문제가 없음.
+  autoconfigure:
+    exclude:
+    - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+    - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
+    - org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+    import: classpath:application-local.yml
