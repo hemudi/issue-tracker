@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.view.RedirectView;
 
 @RestController
 @RequestMapping("/api/login/oauth2/github")
@@ -26,10 +25,14 @@ public class GithubOAuthController {
     }
 
     @GetMapping
-    public RedirectView requestAuthorization() {
-        return new RedirectView(O_AUTH_PROVIDER
-            .getAuthorizationUri(oAuthCredential.getClientId(), oAuthCredential.getRedirectPath())
-            .toString());
+    public ResponseEntity<Void> requestAuthorization() {
+        URI authorizationUri = O_AUTH_PROVIDER.getAuthorizationUri(
+            oAuthCredential.getClientId(),
+            oAuthCredential.getRedirectPath());
+
+        return ResponseEntity.status(HttpStatus.FOUND)
+            .location(authorizationUri)
+            .build();
     }
 
     @GetMapping("/callback")
