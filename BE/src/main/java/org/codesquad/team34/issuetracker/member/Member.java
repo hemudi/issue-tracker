@@ -36,4 +36,11 @@ public class Member extends BaseEntity {
         this.imageUrl = imageUrl;
         this.oAuthProvider = oAuthProvider;
     }
+
+    public Member updateProfile(Member member) {
+        this.name = member.name;
+        this.imageUrl = member.imageUrl;
+
+        return this;
+    }
 }

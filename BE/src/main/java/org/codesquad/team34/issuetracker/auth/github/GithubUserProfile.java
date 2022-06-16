@@ -3,10 +3,9 @@ package org.codesquad.team34.issuetracker.auth.github;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.ToString;
 import org.codesquad.team34.issuetracker.auth.OAuthProvider;
+import org.codesquad.team34.issuetracker.member.Member;
 
-@ToString
 public class GithubUserProfile {
 
     private final String userId;
@@ -21,5 +20,9 @@ public class GithubUserProfile {
         this.userId = userId;
         this.name = name;
         this.imageUrl = imageUrl;
+    }
+
+    public Member toMember() {
+        return new Member(userId, name, imageUrl, OAuthProvider.GITHUB);
     }
 }

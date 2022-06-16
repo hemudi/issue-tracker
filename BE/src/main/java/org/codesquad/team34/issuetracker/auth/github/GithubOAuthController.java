@@ -1,9 +1,12 @@
 package org.codesquad.team34.issuetracker.auth.github;
 
 import java.net.URI;
+import java.util.Optional;
 import org.codesquad.team34.issuetracker.auth.OAuthCredential;
 import org.codesquad.team34.issuetracker.auth.OAuthProperties;
 import org.codesquad.team34.issuetracker.auth.OAuthProvider;
+import org.codesquad.team34.issuetracker.auth.OAuthService;
+import org.codesquad.team34.issuetracker.member.Member;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,10 +21,13 @@ public class GithubOAuthController {
     private static final OAuthProvider O_AUTH_PROVIDER = OAuthProvider.GITHUB;
     private final OAuthCredential oAuthCredential;
     private final GithubOAuthClient oAuthClient;
+    private final OAuthService oAuthService;
 
-    public GithubOAuthController(OAuthProperties oAuthProperties, GithubOAuthClient oAuthClient) {
+    public GithubOAuthController(OAuthProperties oAuthProperties, GithubOAuthClient oAuthClient,
+        OAuthService oAuthService) {
         this.oAuthCredential = oAuthProperties.get(O_AUTH_PROVIDER.getLabel());
         this.oAuthClient = oAuthClient;
+        this.oAuthService = oAuthService;
     }
 
     @GetMapping
@@ -37,11 +43,19 @@ public class GithubOAuthController {
 
     @GetMapping("/callback")
     public ResponseEntity<Void> login(@RequestParam(name = "code") String code) {
-        GithubAccessToken accessToken = oAuthClient.getAccessToken(code);
-        GithubUserProfile userProfile = oAuthClient.getUserProfile(accessToken);
+        Member member = identifyMember(code);
 
         return ResponseEntity.status(HttpStatus.FOUND)
             .location(URI.create("/"))
             .build();
+    }
+
+    private Member identifyMember(String code) {
+        return Optional.of(code)
+            .map(oAuthClient::getAccessToken)
+            .map(oAuthClient::getUserProfile)
+            .map(GithubUserProfile::toMember)
+            .map(oAuthService::upsertMember)
+            .orElseThrow();
     }
 }
