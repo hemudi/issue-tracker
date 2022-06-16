@@ -25,7 +25,7 @@ public enum OAuthProvider {
     }
 
     public URI getAuthorizationUri(String clientId, String redirectPath) {
-        return UriComponentsBuilder.fromPath(authorizationPath)
+        return UriComponentsBuilder.fromHttpUrl(authorizationPath)
             .queryParam("client_id", clientId)
             .queryParam("redirect_uri", redirectPath)
             .build()
