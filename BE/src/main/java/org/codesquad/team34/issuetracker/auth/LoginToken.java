@@ -1,5 +1,8 @@
 package org.codesquad.team34.issuetracker.auth;
 
+import io.jsonwebtoken.Jwts;
+import org.codesquad.team34.issuetracker.auth.github.LoginTokenFactory;
+
 public class LoginToken {
 
     public static final String CLAIM_MEMBER_ID = "member_id";
@@ -8,6 +11,15 @@ public class LoginToken {
 
     public LoginToken(String token) {
         this.token = token;
+    }
+
+    public Long getMemberId() {
+        return Jwts.parserBuilder()
+            .setSigningKey(LoginTokenFactory.KEY)
+            .build()
+            .parseClaimsJws(token)
+            .getBody()
+            .get(CLAIM_MEMBER_ID, Long.class);
     }
 
     @Override
