@@ -1,4 +1,4 @@
-package org.codesquad.team34.issuetracker.auth.github;
+package org.codesquad.team34.issuetracker.auth;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -6,7 +6,6 @@ import io.jsonwebtoken.security.Keys;
 import java.time.Instant;
 import java.util.Date;
 import javax.crypto.SecretKey;
-import org.codesquad.team34.issuetracker.auth.LoginToken;
 import org.codesquad.team34.issuetracker.member.Member;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

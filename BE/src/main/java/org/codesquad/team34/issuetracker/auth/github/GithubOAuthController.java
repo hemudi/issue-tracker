@@ -3,6 +3,7 @@ package org.codesquad.team34.issuetracker.auth.github;
 import java.net.URI;
 import java.util.Optional;
 import org.codesquad.team34.issuetracker.auth.LoginToken;
+import org.codesquad.team34.issuetracker.auth.LoginTokenFactory;
 import org.codesquad.team34.issuetracker.auth.OAuthCredential;
 import org.codesquad.team34.issuetracker.auth.OAuthProperties;
 import org.codesquad.team34.issuetracker.auth.OAuthProvider;

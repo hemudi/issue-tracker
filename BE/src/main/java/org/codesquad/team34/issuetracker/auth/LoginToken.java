@@ -1,7 +1,6 @@
 package org.codesquad.team34.issuetracker.auth;
 
 import io.jsonwebtoken.Jwts;
-import org.codesquad.team34.issuetracker.auth.github.LoginTokenFactory;
 
 public class LoginToken {
 
