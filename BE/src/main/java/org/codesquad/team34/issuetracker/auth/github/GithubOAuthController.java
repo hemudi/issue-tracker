@@ -39,9 +39,7 @@ public class GithubOAuthController {
 
     @GetMapping
     public ResponseEntity<Void> requestAuthorization() {
-        URI authorizationUri = O_AUTH_PROVIDER.getAuthorizationUri(
-            oAuthCredential.getClientId(),
-            oAuthCredential.getRedirectPath());
+        URI authorizationUri = oAuthCredential.getAuthorizationUri();
 
         return ResponseEntity.status(HttpStatus.FOUND)
             .location(authorizationUri)

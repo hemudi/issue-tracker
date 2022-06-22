@@ -22,7 +22,7 @@ public class GithubOAuthClient {
     }
 
     public GithubAccessToken getAccessToken(String code) {
-        return WebClient.create(O_AUTH_PROVIDER.getAccessTokenPath())
+        return WebClient.create(oAuthCredential.getAccessTokenPath())
             .post()
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
@@ -33,7 +33,7 @@ public class GithubOAuthClient {
     }
 
     public GithubUserProfile getUserProfile(GithubAccessToken accessToken) {
-        return WebClient.create(O_AUTH_PROVIDER.getUserProfilePath())
+        return WebClient.create(oAuthCredential.getUserProfilePath())
             .get()
             .accept(MediaType.parseMediaType("application/vnd.github.v3+json"))
             .header(HttpHeaders.AUTHORIZATION, accessToken.toHeaderValue())
