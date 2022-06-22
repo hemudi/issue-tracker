@@ -1,4 +1,4 @@
-package org.codesquad.team34.issuetracker.auth;
+package org.codesquad.team34.issuetracker.member;
 
 import lombok.RequiredArgsConstructor;
 import org.codesquad.team34.issuetracker.member.Member;
@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class OAuthService {
+public class MemberService {
 
     private final MemberRepository memberRepository;
 

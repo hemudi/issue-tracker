@@ -7,7 +7,7 @@ import org.codesquad.team34.issuetracker.auth.LoginTokenFactory;
 import org.codesquad.team34.issuetracker.auth.OAuthCredential;
 import org.codesquad.team34.issuetracker.auth.OAuthProperties;
 import org.codesquad.team34.issuetracker.auth.OAuthProvider;
-import org.codesquad.team34.issuetracker.auth.OAuthService;
+import org.codesquad.team34.issuetracker.member.MemberService;
 import org.codesquad.team34.issuetracker.member.Member;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -26,14 +26,14 @@ public class GithubOAuthController {
 
     private final OAuthCredential oAuthCredential;
     private final GithubOAuthClient oAuthClient;
-    private final OAuthService oAuthService;
+    private final MemberService memberService;
     private final LoginTokenFactory loginTokenFactory;
 
     public GithubOAuthController(OAuthProperties oAuthProperties, GithubOAuthClient oAuthClient,
-        OAuthService oAuthService, LoginTokenFactory loginTokenFactory) {
+        MemberService memberService, LoginTokenFactory loginTokenFactory) {
         this.oAuthCredential = oAuthProperties.get(O_AUTH_PROVIDER.label());
         this.oAuthClient = oAuthClient;
-        this.oAuthService = oAuthService;
+        this.memberService = memberService;
         this.loginTokenFactory = loginTokenFactory;
     }
 
@@ -69,7 +69,7 @@ public class GithubOAuthController {
             .map(oAuthClient::getAccessToken)
             .map(oAuthClient::getUserProfile)
             .map(GithubUserProfile::toMember)
-            .map(oAuthService::upsertMember)
+            .map(memberService::upsertMember)
             .orElseThrow();
     }
 }
