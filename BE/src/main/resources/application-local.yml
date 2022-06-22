@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/issue_tracker
+    username: local_tester
+    password: ${MYSQL_PASSWORD}
+
+oauth2:
+  credentials:
+    github:
+      redirect-path: http://localhost:8080/api/login/oauth2/github/callback
+      client-id: 55b2510038c2a05ef990
+      client-secret: ${GITHUB_OAUTH_CLIENT_SECRET}
