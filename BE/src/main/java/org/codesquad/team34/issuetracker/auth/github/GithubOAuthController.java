@@ -6,6 +6,7 @@ import org.codesquad.team34.issuetracker.auth.LoginTokenFactory;
 import org.codesquad.team34.issuetracker.auth.OAuthCredential;
 import org.codesquad.team34.issuetracker.auth.OAuthProperties;
 import org.codesquad.team34.issuetracker.auth.OAuthProvider;
+import org.codesquad.team34.issuetracker.auth.dto.OAuthLoginUrl;
 import org.codesquad.team34.issuetracker.member.Member;
 import org.codesquad.team34.issuetracker.member.MemberService;
 import org.springframework.http.HttpHeaders;
@@ -37,12 +38,12 @@ public class GithubOAuthController {
     }
 
     @GetMapping
-    public ResponseEntity<Void> requestAuthorization() {
+    public ResponseEntity<OAuthLoginUrl> getLoginUrl() {
         URI authorizationUri = oAuthCredential.getAuthorizationUri();
+        OAuthLoginUrl loginUrl = new OAuthLoginUrl(O_AUTH_PROVIDER.label(),
+            authorizationUri.toString());
 
-        return ResponseEntity.status(HttpStatus.FOUND)
-            .location(authorizationUri)
-            .build();
+        return ResponseEntity.ok(loginUrl);
     }
 
     @GetMapping("/callback")
