@@ -18,7 +18,7 @@ public class GithubOAuthClient {
     private final OAuthCredential oAuthCredential;
 
     public GithubOAuthClient(OAuthProperties oAuthProperties) {
-        this.oAuthCredential = oAuthProperties.get(O_AUTH_PROVIDER.getLabel());
+        this.oAuthCredential = oAuthProperties.get(O_AUTH_PROVIDER.label());
     }
 
     public GithubAccessToken getAccessToken(String code) {

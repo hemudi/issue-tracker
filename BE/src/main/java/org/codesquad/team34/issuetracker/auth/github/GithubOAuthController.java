@@ -31,7 +31,7 @@ public class GithubOAuthController {
 
     public GithubOAuthController(OAuthProperties oAuthProperties, GithubOAuthClient oAuthClient,
         OAuthService oAuthService, LoginTokenFactory loginTokenFactory) {
-        this.oAuthCredential = oAuthProperties.get(O_AUTH_PROVIDER.getLabel());
+        this.oAuthCredential = oAuthProperties.get(O_AUTH_PROVIDER.label());
         this.oAuthClient = oAuthClient;
         this.oAuthService = oAuthService;
         this.loginTokenFactory = loginTokenFactory;
