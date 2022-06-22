@@ -13,7 +13,7 @@ public class MemberService {
     }
 
     @Transactional
-    public Member upsertMember(Member member) {
+    public Member saveMember(Member member) {
         return memberRepository.findByoAuthProviderAndUserId(
                 member.getOAuthProvider(),
                 member.getUserId())

@@ -70,6 +70,6 @@ public class GithubOAuthController {
         GithubAccessToken accessToken = oAuthClient.getAccessToken(code);
         GithubUserProfile userProfile = oAuthClient.getUserProfile(accessToken);
 
-        return memberService.upsertMember(userProfile.toMember());
+        return memberService.saveMember(userProfile.toMember());
     }
 }
