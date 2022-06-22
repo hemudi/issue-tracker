@@ -1,16 +1,16 @@
 package org.codesquad.team34.issuetracker.auth.github;
 
 import java.net.URI;
-import java.util.Optional;
 import org.codesquad.team34.issuetracker.auth.LoginToken;
 import org.codesquad.team34.issuetracker.auth.LoginTokenFactory;
 import org.codesquad.team34.issuetracker.auth.OAuthCredential;
 import org.codesquad.team34.issuetracker.auth.OAuthProperties;
 import org.codesquad.team34.issuetracker.auth.OAuthProvider;
-import org.codesquad.team34.issuetracker.auth.OAuthService;
+import org.codesquad.team34.issuetracker.auth.dto.OAuthLoginUrl;
 import org.codesquad.team34.issuetracker.member.Member;
+import org.codesquad.team34.issuetracker.member.MemberService;
+import org.codesquad.team34.issuetracker.member.dto.MemberResponse;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,52 +26,50 @@ public class GithubOAuthController {
 
     private final OAuthCredential oAuthCredential;
     private final GithubOAuthClient oAuthClient;
-    private final OAuthService oAuthService;
+    private final MemberService memberService;
     private final LoginTokenFactory loginTokenFactory;
 
     public GithubOAuthController(OAuthProperties oAuthProperties, GithubOAuthClient oAuthClient,
-        OAuthService oAuthService, LoginTokenFactory loginTokenFactory) {
-        this.oAuthCredential = oAuthProperties.get(O_AUTH_PROVIDER.getLabel());
+        MemberService memberService, LoginTokenFactory loginTokenFactory) {
+        this.oAuthCredential = oAuthProperties.get(O_AUTH_PROVIDER.label());
         this.oAuthClient = oAuthClient;
-        this.oAuthService = oAuthService;
+        this.memberService = memberService;
         this.loginTokenFactory = loginTokenFactory;
     }
 
     @GetMapping
-    public ResponseEntity<Void> requestAuthorization() {
-        URI authorizationUri = O_AUTH_PROVIDER.getAuthorizationUri(
-            oAuthCredential.getClientId(),
-            oAuthCredential.getRedirectPath());
+    public ResponseEntity<OAuthLoginUrl> getLoginUrl() {
+        URI authorizationUri = oAuthCredential.getAuthorizationUri();
+        OAuthLoginUrl loginUrl = new OAuthLoginUrl(O_AUTH_PROVIDER.label(),
+            authorizationUri.toString());
 
-        return ResponseEntity.status(HttpStatus.FOUND)
-            .location(authorizationUri)
-            .build();
+        return ResponseEntity.ok(loginUrl);
     }
 
     @GetMapping("/callback")
-    public ResponseEntity<Void> login(@RequestParam(name = "code") String code) {
+    public ResponseEntity<MemberResponse> login(@RequestParam(name = "code") String code) {
         Member member = identifyMember(code);
         LoginToken loginToken = loginTokenFactory.issueFor(member);
+        ResponseCookie loginCookie = createLoginCookie(loginToken);
 
-        ResponseCookie loginCookie = ResponseCookie
-            .from("access_token", loginToken.toString())
+        return ResponseEntity.ok()
+            .header(HttpHeaders.SET_COOKIE, loginCookie.toString())
+            .body(MemberResponse.fromEntity(member));
+    }
+
+    private ResponseCookie createLoginCookie(LoginToken loginToken) {
+        return ResponseCookie
+            .from("login_token", loginToken.toString())
             .maxAge(LoginTokenFactory.EXPIRE_IN_SECONDS)
             .httpOnly(true)
             .path("/")
             .build();
-
-        return ResponseEntity.status(HttpStatus.FOUND)
-            .header(HttpHeaders.SET_COOKIE, loginCookie.toString())
-            .location(URI.create("/"))
-            .build();
     }
 
     private Member identifyMember(String code) {
-        return Optional.of(code)
-            .map(oAuthClient::getAccessToken)
-            .map(oAuthClient::getUserProfile)
-            .map(GithubUserProfile::toMember)
-            .map(oAuthService::upsertMember)
-            .orElseThrow();
+        GithubAccessToken accessToken = oAuthClient.getAccessToken(code);
+        GithubUserProfile userProfile = oAuthClient.getUserProfile(accessToken);
+
+        return memberService.saveMember(userProfile.toMember());
     }
 }
