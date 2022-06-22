@@ -14,9 +14,9 @@ public class MemberService {
 
     @Transactional
     public Member upsertMember(Member member) {
-        return memberRepository.findByUserIdAndOAuthProvider(
-                member.getUserId(),
-                member.getOAuthProvider())
+        return memberRepository.findByoAuthProviderAndUserId(
+                member.getOAuthProvider(),
+                member.getUserId())
             .map(existingMember -> existingMember.updateProfile(member))
             .orElseGet(() -> memberRepository.save(member));
     }
