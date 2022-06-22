@@ -1,14 +1,13 @@
 package org.codesquad.team34.issuetracker.auth.github;
 
 import java.net.URI;
-import java.util.Optional;
 import org.codesquad.team34.issuetracker.auth.LoginToken;
 import org.codesquad.team34.issuetracker.auth.LoginTokenFactory;
 import org.codesquad.team34.issuetracker.auth.OAuthCredential;
 import org.codesquad.team34.issuetracker.auth.OAuthProperties;
 import org.codesquad.team34.issuetracker.auth.OAuthProvider;
-import org.codesquad.team34.issuetracker.member.MemberService;
 import org.codesquad.team34.issuetracker.member.Member;
+import org.codesquad.team34.issuetracker.member.MemberService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
@@ -65,11 +64,9 @@ public class GithubOAuthController {
     }
 
     private Member identifyMember(String code) {
-        return Optional.of(code)
-            .map(oAuthClient::getAccessToken)
-            .map(oAuthClient::getUserProfile)
-            .map(GithubUserProfile::toMember)
-            .map(memberService::upsertMember)
-            .orElseThrow();
+        GithubAccessToken accessToken = oAuthClient.getAccessToken(code);
+        GithubUserProfile userProfile = oAuthClient.getUserProfile(accessToken);
+
+        return memberService.upsertMember(userProfile.toMember());
     }
 }
