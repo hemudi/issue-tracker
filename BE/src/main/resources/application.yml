@@ -17,6 +17,13 @@ logging:
         type:
           descriptor:
             sql: trace
+
+oauth2:
+  credentials:
+    github:
+      authorization-path: https://github.com/login/oauth/authorize
+      access-token-path: https://github.com/login/oauth/access_token
+      user-profile-path: https://api.github.com/user
 ---
 spring:
   config:
