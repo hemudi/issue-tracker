@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { Styled_textInputWrap, Styled_textInput, Styled_label } from '@/components/TextInput/style';
+import { $TextInputWrap, $TextInput, $Label } from '@/components/TextInput/style';
 import { ITextInputProps } from '@/components/TextInput/type';
 
 const MIN_INPUT_VALUE_LENGTH = 1;
 
-export default function TextInput({
+export default function TextInput<T extends string>({
   placeholder = '',
   label,
   type = 'text',
@@ -12,35 +12,35 @@ export default function TextInput({
   as,
   handleChange,
   ...props
-}: ITextInputProps) {
+}: ITextInputProps<T>) {
   const [visibleLabel, setVisibleLabel] = useState(false);
-  const TextInputWrap = as || Styled_textInputWrap;
+  const TextInputWrap = as || $TextInputWrap;
 
-  const showLabel = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const hasValue = event.target.value.length >= MIN_INPUT_VALUE_LENGTH;
+  const showLabel = (target: HTMLInputElement) => {
+    const hasValue = target.value.length >= MIN_INPUT_VALUE_LENGTH;
     setVisibleLabel(hasValue);
   };
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (handleChange) handleChange(event);
-    showLabel(event);
+  const handleInputChange = (target: HTMLInputElement) => {
+    if (handleChange) handleChange(target);
+    showLabel(target);
   };
 
   return (
     <TextInputWrap>
       {label && (
-        <Styled_label styleType={props.styleType} visible={visibleLabel}>
+        <$Label styleType={props.styleType} visible={visibleLabel}>
           {label}
-        </Styled_label>
+        </$Label>
       )}
-      <Styled_textInput
+      <$TextInput
         {...props}
         type={type}
         name={name}
         placeholder={placeholder}
         visibleLabel={visibleLabel}
-        onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleInputChange(event)}
-      ></Styled_textInput>
+        onChange={({ target }: { target: HTMLInputElement }) => handleInputChange(target)}
+      />
     </TextInputWrap>
   );
 }

@@ -48,7 +48,10 @@ const COLOR = {
     initial: PALETTE.BLUE.DARK[200],
     focus: PALETTE.BLUE.DARK[100],
     hover: PALETTE.BLUE.DARK[300]
-  },
+  }
+};
+
+const ERROR = {
   error: {
     background: PALETTE.RED[100],
     border: PALETTE.RED[200],
@@ -66,4 +69,30 @@ const COLOR = {
   }
 };
 
-export { PALETTE, COLOR };
+const LABEL = {
+  open: {
+    background: PALETTE.BLUE[100],
+    color: PALETTE.BLUE[200],
+    border: PALETTE.BLUE[200]
+  },
+  close: {
+    background: PALETTE.BLUE.DARK[100],
+    color: PALETTE.BLUE.DARK[200],
+    border: PALETTE.BLUE.DARK[200]
+  },
+  dark: {
+    background: PALETTE.GREY[100],
+    color: PALETTE.WHITE
+  },
+  light: {
+    background: PALETTE.GREY[600],
+    color: PALETTE.BLACK
+  },
+  line: {
+    background: PALETTE.WHITE,
+    color: PALETTE.GREY[200],
+    border: PALETTE.GREY[400]
+  }
+};
+
+export { PALETTE, COLOR, ERROR, LABEL };

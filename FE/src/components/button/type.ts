@@ -1,5 +1,4 @@
 import { FlattenInterpolation, ThemeProps, StyledComponent } from 'styled-components';
-import { IconTypes } from '@/components/Icon';
 
 type ButtonStyleType =
   | 'large'
@@ -15,7 +14,6 @@ interface IButtonStyleProps {
   width?: string;
   height?: string;
   color?: string;
-  iconColor?: string;
   background?: string;
   border?: string;
   borderRadius?: string;
@@ -24,17 +22,22 @@ interface IButtonStyleProps {
 }
 
 interface IButtonProps extends IButtonStyleProps {
+  gap?: string;
   styleType?: ButtonStyleType;
-  iconType?: IconTypes;
-  text?: string;
   children?: React.ReactNode;
   disabled?: boolean;
+  hoverStyle?: IButtonStyleProps;
+  activeStyle?: IButtonStyleProps;
+  disabledStyle?: IButtonStyleProps;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-interface IStyled_buttonType extends IButtonStyleProps {
+interface I$ButtonType extends IButtonStyleProps {
+  gap?: string;
   styleType?: ButtonStyleType;
-  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  hoverStyle?: IButtonStyleProps;
+  activeStyle?: IButtonStyleProps;
+  disabledStyle?: IButtonStyleProps;
 }
 
-export type { IButtonProps, ButtonStyleType, IButtonStyleProps, ButtonStyle, IStyled_buttonType };
+export type { IButtonProps, ButtonStyleType, IButtonStyleProps, ButtonStyle, I$ButtonType };
