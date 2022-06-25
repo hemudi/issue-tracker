@@ -1,11 +1,17 @@
 import styled from 'styled-components';
 
-const $Contents = styled.div`
+const $MenuWrapper = styled.div`
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  min-height: 100vh;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 25px;
 `;
 
-export { $Contents };
+const $ButtonWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 15px;
+`;
+
+export { $MenuWrapper, $ButtonWrapper };

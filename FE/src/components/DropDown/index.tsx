@@ -5,9 +5,16 @@ import Panel from '@/components/Dropdown/Panel';
 import { IDropDown } from '@/components/Dropdown/type';
 import { $DropDown } from '@/components/Dropdown/style';
 
-export default function DropDown({ indicatorName, panelName, ...panelProps }: IDropDown) {
+export default function DropDown({
+  indicatorName,
+  indicatorGap,
+  indicatorPadding,
+  panelName,
+  initialValue,
+  ...panelProps
+}: IDropDown) {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedValue, setSelectedValue] = useState<string>('');
+  const [selectedValue, setSelectedValue] = useState(initialValue);
   const panelRef = useRef<HTMLDivElement>(null);
 
   const updateSelectedValue = (value: string) => {
@@ -22,7 +29,12 @@ export default function DropDown({ indicatorName, panelName, ...panelProps }: ID
 
   return (
     <$DropDown>
-      <Button styleType="mediumText" onClick={() => setIsOpen(!isOpen)}>
+      <Button
+        styleType="mediumText"
+        gap={indicatorGap}
+        padding={indicatorPadding}
+        onClick={() => setIsOpen(!isOpen)}
+      >
         {indicatorName}
         <Icon iconType={isOpen ? 'arrowUp' : 'arrowDown'} />
       </Button>
