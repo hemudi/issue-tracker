@@ -9,6 +9,10 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
+  data:
+    web:
+      pageable:
+        one-indexed-parameters: true
 
 logging:
   level:
@@ -16,7 +20,8 @@ logging:
       hibernate:
         type:
           descriptor:
-            sql: trace
+            sql:
+              BasicBinder: trace
 
 oauth2:
   credentials:
