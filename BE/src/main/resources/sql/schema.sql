@@ -19,7 +19,7 @@ DROP TABLE IF EXISTS `member`;
 
 CREATE TABLE IF NOT EXISTS `member`
 (
-    `id`              BIGINT       NOT NULL,
+    `id`              BIGINT       NOT NULL AUTO_INCREMENT,
     `user_id`         VARCHAR(45)  NOT NULL,
     `name`            VARCHAR(45)  NOT NULL,
     `image_url`       VARCHAR(500) NOT NULL,
@@ -37,11 +37,11 @@ DROP TABLE IF EXISTS `milestone`;
 
 CREATE TABLE IF NOT EXISTS `milestone`
 (
-    `id`            BIGINT       NOT NULL,
+    `id`            BIGINT       NOT NULL AUTO_INCREMENT,
     `name`          VARCHAR(50)  NOT NULL,
     `description`   VARCHAR(100) NOT NULL,
     `status`        VARCHAR(10)  NOT NULL,
-    `target_date`   DATE         NOT NULL,
+    `target_date`   DATE,
     `open_issues`   INT          NOT NULL,
     `closed_issues` INT          NOT NULL,
     `created_at`    TIMESTAMP    NOT NULL,
@@ -57,7 +57,7 @@ DROP TABLE IF EXISTS `issue`;
 
 CREATE TABLE IF NOT EXISTS `issue`
 (
-    `id`           BIGINT      NOT NULL,
+    `id`           BIGINT      NOT NULL AUTO_INCREMENT,
     `title`        VARCHAR(80) NOT NULL,
     `status`       VARCHAR(10) NOT NULL,
     `body`         TEXT        NOT NULL,
@@ -88,7 +88,7 @@ DROP TABLE IF EXISTS `label`;
 
 CREATE TABLE IF NOT EXISTS `label`
 (
-    `id`          BIGINT       NOT NULL,
+    `id`          BIGINT       NOT NULL AUTO_INCREMENT,
     `name`        VARCHAR(50)  NOT NULL,
     `description` VARCHAR(100) NOT NULL,
     `color_code`  VARCHAR(10)  NOT NULL,
@@ -105,7 +105,7 @@ DROP TABLE IF EXISTS `comment`;
 
 CREATE TABLE IF NOT EXISTS `comment`
 (
-    `id`         BIGINT    NOT NULL,
+    `id`         BIGINT    NOT NULL AUTO_INCREMENT,
     `body`       TEXT      NOT NULL,
     `created_at` TIMESTAMP NOT NULL,
     `member_id`  BIGINT    NOT NULL,
