@@ -5,24 +5,26 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.codesquad.team34.issuetracker.auth.LoginToken;
-import org.codesquad.team34.issuetracker.member.Member;
-import org.codesquad.team34.issuetracker.member.MemberRepository;
+import org.codesquad.team34.issuetracker.member.MemberService;
+import org.codesquad.team34.issuetracker.member.dto.MemberDto;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+@Slf4j
 @Component
 public class LoginInterceptor implements HandlerInterceptor {
 
     public static final String CURRENT_LOGIN = "current_login";
     private static final String BEARER = "Bearer";
     private static final String SPACE = " ";
-    private final MemberRepository memberRepository;
+    private final MemberService memberService;
 
-    public LoginInterceptor(MemberRepository memberRepository) {
-        this.memberRepository = memberRepository;
+    public LoginInterceptor(MemberService memberService) {
+        this.memberService = memberService;
     }
 
     @Override
@@ -31,14 +33,14 @@ public class LoginInterceptor implements HandlerInterceptor {
 
         try {
             LoginToken loginToken = extractLoginToken(request);
+            MemberDto memberDto = memberService.findMember(loginToken.getMemberId());
 
-            Member member = memberRepository.findById(loginToken.getMemberId())
-                .orElseThrow(NoSuchElementException::new);
-
-            request.setAttribute(CURRENT_LOGIN, member);
+            request.setAttribute(CURRENT_LOGIN, memberDto);
 
             return true;
         } catch (NoSuchFieldException | NoSuchElementException | JwtException e) {
+            log.error("다음 경로에 대한 요청에서 로그인 에러 발생: {}", request.getRequestURI());
+            e.printStackTrace();
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
 
             return false;

@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import lombok.Getter;
 import org.codesquad.team34.issuetracker.issue.Issue;
 import org.codesquad.team34.issuetracker.label.dto.LabelResponse;
-import org.codesquad.team34.issuetracker.member.dto.MemberResponse;
+import org.codesquad.team34.issuetracker.member.dto.MemberDto;
 import org.codesquad.team34.issuetracker.milestone.dto.MilestoneResponse;
 
 @Getter
@@ -15,19 +15,19 @@ public class IssueListElement {
     private final Long id;
     private final String title;
     private final String status;
-    private final LocalDateTime timestamp;
-    private final MemberResponse author;
+    private final LocalDateTime createdAt;
+    private final MemberDto author;
     private final MilestoneResponse milestone;
-    private final List<MemberResponse> assignees;
+    private final List<MemberDto> assignees;
     private final List<LabelResponse> labels;
 
-    private IssueListElement(Long id, String title, String status, LocalDateTime timestamp,
-        MemberResponse author, MilestoneResponse milestone, List<MemberResponse> assignees,
+    private IssueListElement(Long id, String title, String status, LocalDateTime createdAt,
+        MemberDto author, MilestoneResponse milestone, List<MemberDto> assignees,
         List<LabelResponse> labels) {
         this.id = id;
         this.title = title;
         this.status = status;
-        this.timestamp = timestamp;
+        this.createdAt = createdAt;
         this.author = author;
         this.milestone = milestone;
         this.assignees = assignees;
@@ -35,9 +35,9 @@ public class IssueListElement {
     }
 
     public static IssueListElement fromEntity(Issue issue) {
-        List<MemberResponse> assignees = issue.getAssignees()
+        List<MemberDto> assignees = issue.getAssignees()
             .stream()
-            .map(MemberResponse::fromEntity)
+            .map(MemberDto::fromEntity)
             .collect(Collectors.toUnmodifiableList());
 
         List<LabelResponse> labels = issue.getLabels()
@@ -49,8 +49,8 @@ public class IssueListElement {
             issue.getId(),
             issue.getTitle(),
             issue.getStatus().label(),
-            issue.getTimestamp(),
-            MemberResponse.fromEntity(issue.getAuthor()),
+            issue.getCreatedAt(),
+            MemberDto.fromEntity(issue.getAuthor()),
             MilestoneResponse.fromEntity(issue.getMilestone()),
             assignees,
             labels
