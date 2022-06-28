@@ -1,11 +1,12 @@
 package org.codesquad.team34.issuetracker.issue;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -32,9 +33,10 @@ public class Issue extends BaseEntity {
     private Long id;
 
     private String title;
+
+    @Enumerated(EnumType.STRING)
     private Status status;
     private String body;
-    private LocalDateTime timestamp;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
