@@ -2,6 +2,7 @@ package org.codesquad.team34.issuetracker.milestone;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.codesquad.team34.issuetracker.common.dto.TotalCountResponse;
 import org.codesquad.team34.issuetracker.milestone.dto.MilestoneListResponse;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "Milestones")
+@SecurityRequirement(name = "bearer-key")
 @RestController
 @RequestMapping("/api/milestones")
 public class MilestoneController {

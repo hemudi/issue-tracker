@@ -1,6 +1,7 @@
 package org.codesquad.team34.issuetracker.member;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.codesquad.team34.issuetracker.common.LoginInterceptor;
 import org.codesquad.team34.issuetracker.member.dto.MemberDto;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "Members")
+@SecurityRequirement(name = "bearer-key")
 @RestController
 @RequestMapping("api/members")
 public class MemberController {

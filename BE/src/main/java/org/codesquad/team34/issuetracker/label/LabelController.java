@@ -1,6 +1,7 @@
 package org.codesquad.team34.issuetracker.label;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.codesquad.team34.issuetracker.common.dto.TotalCountResponse;
 import org.codesquad.team34.issuetracker.label.dto.LabelListResponse;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "Labels")
+@SecurityRequirement(name = "bearer-key")
 @RestController
 @RequestMapping("/api/labels")
 public class LabelController {

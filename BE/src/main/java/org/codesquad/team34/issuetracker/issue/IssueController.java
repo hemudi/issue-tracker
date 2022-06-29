@@ -1,6 +1,7 @@
 package org.codesquad.team34.issuetracker.issue;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.codesquad.team34.issuetracker.common.dto.TotalCountResponse;
 import org.codesquad.team34.issuetracker.issue.dto.IssueListResponse;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "Issues")
+@SecurityRequirement(name = "bearer-key")
 @RestController
 @RequestMapping("/api/issues")
 public class IssueController {
