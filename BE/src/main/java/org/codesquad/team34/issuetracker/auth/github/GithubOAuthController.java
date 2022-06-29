@@ -1,11 +1,15 @@
 package org.codesquad.team34.issuetracker.auth.github;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.net.URI;
 import org.codesquad.team34.issuetracker.auth.LoginToken;
 import org.codesquad.team34.issuetracker.auth.LoginTokenFactory;
 import org.codesquad.team34.issuetracker.auth.OAuthCredential;
 import org.codesquad.team34.issuetracker.auth.OAuthProperties;
 import org.codesquad.team34.issuetracker.auth.OAuthProvider;
+import org.codesquad.team34.issuetracker.auth.dto.LoginResponse;
 import org.codesquad.team34.issuetracker.auth.dto.OAuthLoginUrl;
 import org.codesquad.team34.issuetracker.member.Member;
 import org.codesquad.team34.issuetracker.member.MemberService;
@@ -18,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "GitHub OAuth")
 @RestController
 @RequestMapping("/api/login/oauth2/github")
 public class GithubOAuthController {
@@ -37,6 +42,7 @@ public class GithubOAuthController {
         this.loginTokenFactory = loginTokenFactory;
     }
 
+    @Operation(summary = "로그인 URL 조회")
     @GetMapping
     public ResponseEntity<OAuthLoginUrl> getLoginUrl() {
         URI authorizationUri = oAuthCredential.getAuthorizationUri();
@@ -46,15 +52,21 @@ public class GithubOAuthController {
         return ResponseEntity.ok(loginUrl);
     }
 
+    @Operation(summary = "로그인 및 토큰 발급 요청")
     @GetMapping("/callback")
-    public ResponseEntity<MemberDto> login(@RequestParam(name = "code") String code) {
+    public ResponseEntity<LoginResponse> login(
+        @RequestParam(name = "code")
+        @Parameter(description = "GitHub에서 발급한 Authorization Code")
+        String code) {
         Member member = identifyMember(code);
         LoginToken loginToken = loginTokenFactory.issueFor(member);
         ResponseCookie loginCookie = createLoginCookie(loginToken);
+        LoginResponse responseBody = new LoginResponse(
+            loginToken.toString(), MemberDto.fromEntity(member));
 
         return ResponseEntity.ok()
             .header(HttpHeaders.SET_COOKIE, loginCookie.toString())
-            .body(MemberDto.fromEntity(member));
+            .body(responseBody);
     }
 
     private ResponseCookie createLoginCookie(LoginToken loginToken) {

@@ -43,6 +43,10 @@ dependencies {
 			'javax.persistence:javax.persistence-api',
 			'javax.annotation:javax.annotation-api'
 
+	// openapi
+	implementation 'org.springdoc:springdoc-openapi-ui:1.6.9'
+
+
 	// test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'io.projectreactor:reactor-test'

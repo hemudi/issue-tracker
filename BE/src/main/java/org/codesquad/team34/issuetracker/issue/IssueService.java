@@ -2,6 +2,7 @@ package org.codesquad.team34.issuetracker.issue;
 
 import com.querydsl.core.types.Predicate;
 import java.util.List;
+import org.codesquad.team34.issuetracker.common.dto.TotalCountResponse;
 import org.codesquad.team34.issuetracker.issue.dto.IssueListResponse;
 import org.codesquad.team34.issuetracker.issue.dto.IssueQueryParams;
 import org.springframework.data.domain.Page;
@@ -18,7 +19,7 @@ public class IssueService {
         this.issueRepository = issueRepository;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public IssueListResponse findAll(IssueQueryParams queryParams, Pageable pageable) {
         Predicate predicate = new IssuePredicateFactory(queryParams).createFromQueryParams();
         Page<Issue> issues = issueRepository.findAll(predicate, pageable);
@@ -31,4 +32,10 @@ public class IssueService {
             loadedIssues);
     }
 
+    @Transactional(readOnly = true)
+    public TotalCountResponse count(IssueQueryParams queryParams) {
+        Predicate predicate = new IssuePredicateFactory(queryParams).createFromQueryParams();
+
+        return new TotalCountResponse(issueRepository.count(predicate));
+    }
 }

@@ -13,6 +13,8 @@ spring:
     web:
       pageable:
         one-indexed-parameters: true
+  jackson:
+    property-naming-strategy: SNAKE_CASE
 
 logging:
   level:
