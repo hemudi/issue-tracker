@@ -38,7 +38,7 @@ public class LoginInterceptor implements HandlerInterceptor {
             request.setAttribute(CURRENT_LOGIN, memberDto);
 
             return true;
-        } catch (NoSuchFieldException | NoSuchElementException | JwtException e) {
+        } catch (NoSuchElementException | IllegalArgumentException | JwtException e) {
             log.error("다음 경로에 대한 요청에서 로그인 에러 발생: {}", request.getRequestURI());
             e.printStackTrace();
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
@@ -47,11 +47,11 @@ public class LoginInterceptor implements HandlerInterceptor {
         }
     }
 
-    private LoginToken extractLoginToken(HttpServletRequest request) throws NoSuchFieldException {
+    private LoginToken extractLoginToken(HttpServletRequest request) {
         String token = Optional.ofNullable(request.getHeader(HttpHeaders.AUTHORIZATION))
             .filter(this::isBearerAuth)
             .map(this::getBearerToken)
-            .orElseThrow(NoSuchFieldException::new);
+            .orElseThrow(NoSuchElementException::new);
 
         return new LoginToken(token);
     }
