@@ -1,5 +1,6 @@
 package org.codesquad.team34.issuetracker.label;
 
+import org.codesquad.team34.issuetracker.common.dto.TotalCountResponse;
 import org.codesquad.team34.issuetracker.label.dto.LabelListResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,5 +26,10 @@ public class LabelService {
             labels.getSize(),
             labels.getContent()
         );
+    }
+
+    @Transactional(readOnly = true)
+    public TotalCountResponse count() {
+        return new TotalCountResponse(labelRepository.count());
     }
 }

@@ -1,5 +1,6 @@
 package org.codesquad.team34.issuetracker.label;
 
+import org.codesquad.team34.issuetracker.common.dto.TotalCountResponse;
 import org.codesquad.team34.issuetracker.label.dto.LabelListResponse;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -20,5 +21,10 @@ public class LabelController {
     @GetMapping
     public ResponseEntity<LabelListResponse> listLabels(Pageable pageable) {
         return ResponseEntity.ok(labelService.findAll(pageable));
+    }
+
+    @GetMapping("/counts")
+    public ResponseEntity<TotalCountResponse> countLabels() {
+        return ResponseEntity.ok(labelService.count());
     }
 }
