@@ -37,3 +37,9 @@ spring:
     activate:
       on-profile: local
     import: classpath:application-local.yml
+---
+spring:
+  config:
+    activate:
+      on-profile: remote
+    import: classpath:application-remote.yml
