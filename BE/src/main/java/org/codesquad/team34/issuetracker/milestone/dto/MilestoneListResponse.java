@@ -7,7 +7,7 @@ import org.codesquad.team34.issuetracker.milestone.Milestone;
 
 public class MilestoneListResponse extends ListResponse<MilestoneResponse> {
 
-    public MilestoneListResponse(long totalCount, int page, int size,
+    private MilestoneListResponse(long totalCount, int page, int size,
         List<MilestoneResponse> data) {
         super(totalCount, page, size, data);
     }
