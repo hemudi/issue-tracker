@@ -1,5 +1,6 @@
 package org.codesquad.team34.issuetracker.issue;
 
+import org.codesquad.team34.issuetracker.common.dto.TotalCountResponse;
 import org.codesquad.team34.issuetracker.issue.dto.IssueListResponse;
 import org.codesquad.team34.issuetracker.issue.dto.IssueQueryParams;
 import org.springframework.data.domain.Pageable;
@@ -23,5 +24,10 @@ public class IssueController {
         Pageable pageable) {
 
         return ResponseEntity.ok(issueService.findAll(queryParams, pageable));
+    }
+
+    @GetMapping("/counts")
+    public ResponseEntity<TotalCountResponse> countIssues(IssueQueryParams queryParams) {
+        return ResponseEntity.ok(issueService.count(queryParams));
     }
 }
