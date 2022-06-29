@@ -6,6 +6,7 @@ import org.codesquad.team34.issuetracker.auth.LoginTokenFactory;
 import org.codesquad.team34.issuetracker.auth.OAuthCredential;
 import org.codesquad.team34.issuetracker.auth.OAuthProperties;
 import org.codesquad.team34.issuetracker.auth.OAuthProvider;
+import org.codesquad.team34.issuetracker.auth.dto.LoginResponse;
 import org.codesquad.team34.issuetracker.auth.dto.OAuthLoginUrl;
 import org.codesquad.team34.issuetracker.member.Member;
 import org.codesquad.team34.issuetracker.member.MemberService;
@@ -47,14 +48,16 @@ public class GithubOAuthController {
     }
 
     @GetMapping("/callback")
-    public ResponseEntity<MemberDto> login(@RequestParam(name = "code") String code) {
+    public ResponseEntity<LoginResponse> login(@RequestParam(name = "code") String code) {
         Member member = identifyMember(code);
         LoginToken loginToken = loginTokenFactory.issueFor(member);
         ResponseCookie loginCookie = createLoginCookie(loginToken);
+        LoginResponse responseBody = new LoginResponse(
+            loginToken.toString(), MemberDto.fromEntity(member));
 
         return ResponseEntity.ok()
             .header(HttpHeaders.SET_COOKIE, loginCookie.toString())
-            .body(MemberDto.fromEntity(member));
+            .body(responseBody);
     }
 
     private ResponseCookie createLoginCookie(LoginToken loginToken) {
