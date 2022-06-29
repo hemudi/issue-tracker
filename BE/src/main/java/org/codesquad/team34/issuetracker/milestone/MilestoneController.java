@@ -1,5 +1,6 @@
 package org.codesquad.team34.issuetracker.milestone;
 
+import org.codesquad.team34.issuetracker.common.dto.TotalCountResponse;
 import org.codesquad.team34.issuetracker.milestone.dto.MilestoneListResponse;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -23,5 +24,11 @@ public class MilestoneController {
         @RequestParam(name = "status", required = false) String status,
         Pageable pageable) {
         return ResponseEntity.ok(milestoneService.findAll(status, pageable));
+    }
+
+    @GetMapping("/counts")
+    public ResponseEntity<TotalCountResponse> countMilestones(
+        @RequestParam(name = "status", required = false) String status) {
+        return ResponseEntity.ok(milestoneService.count(status));
     }
 }
