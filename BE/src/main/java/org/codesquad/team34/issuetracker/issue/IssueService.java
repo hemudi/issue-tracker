@@ -1,8 +1,9 @@
 package org.codesquad.team34.issuetracker.issue;
 
+import com.querydsl.core.types.Predicate;
 import java.util.List;
-import java.util.Optional;
 import org.codesquad.team34.issuetracker.issue.dto.IssueListResponse;
+import org.codesquad.team34.issuetracker.issue.dto.IssueQueryParams;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -18,19 +19,15 @@ public class IssueService {
     }
 
     @Transactional
-    public IssueListResponse findAll(Pageable pageable) {
-        Page<Issue> issues = issueRepository.findAll(pageable);
-        List<Issue> loadedIssues = Optional.of(issues.getContent())
-            .map(issueRepository::fetchAuthor)
-            .map(issueRepository::fetchMilestone)
-            .map(issueRepository::fetchAssignees)
-            .map(issueRepository::fetchLabels)
-            .orElseThrow();
+    public IssueListResponse findAll(IssueQueryParams queryParams, Pageable pageable) {
+        Predicate predicate = new IssuePredicateFactory(queryParams).createFromQueryParams();
+        Page<Issue> issues = issueRepository.findAll(predicate, pageable);
+        List<Issue> loadedIssues = issueRepository.fetchForQueryResult(issues.getContent());
 
         return IssueListResponse.fromEntities(
             issues.getTotalElements(),
-            pageable.getPageNumber(),
-            pageable.getPageSize(),
+            issues.getNumber() + 1, // 1페이지가 첫 페이지
+            issues.getSize(),
             loadedIssues);
     }
 

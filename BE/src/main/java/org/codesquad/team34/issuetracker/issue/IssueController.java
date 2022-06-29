@@ -1,8 +1,8 @@
 package org.codesquad.team34.issuetracker.issue;
 
 import org.codesquad.team34.issuetracker.issue.dto.IssueListResponse;
+import org.codesquad.team34.issuetracker.issue.dto.IssueQueryParams;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,9 +19,9 @@ public class IssueController {
     }
 
     @GetMapping
-    public ResponseEntity<IssueListResponse> listIssues(
-        @PageableDefault(page = 1, size = 20) Pageable pageable) {
+    public ResponseEntity<IssueListResponse> listIssues(IssueQueryParams queryParams,
+        Pageable pageable) {
 
-        return ResponseEntity.ok(issueService.findAll(pageable));
+        return ResponseEntity.ok(issueService.findAll(queryParams, pageable));
     }
 }
