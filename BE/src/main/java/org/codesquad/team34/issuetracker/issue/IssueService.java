@@ -19,7 +19,7 @@ public class IssueService {
         this.issueRepository = issueRepository;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public IssueListResponse findAll(IssueQueryParams queryParams, Pageable pageable) {
         Predicate predicate = new IssuePredicateFactory(queryParams).createFromQueryParams();
         Page<Issue> issues = issueRepository.findAll(predicate, pageable);
@@ -32,6 +32,7 @@ public class IssueService {
             loadedIssues);
     }
 
+    @Transactional(readOnly = true)
     public TotalCountResponse count(IssueQueryParams queryParams) {
         Predicate predicate = new IssuePredicateFactory(queryParams).createFromQueryParams();
 
