@@ -1,10 +1,17 @@
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { AxiosError } from 'axios';
+import { AxiosType } from '@/api/type';
 
-const baseURL = 'https://0fc30a5e-96f5-446a-8ad1-7be878b3b9cb.mock.pstmn.io/api';
+const baseURL = 'https://aa974b35-fbc4-4ee2-9b06-8960e6c6f57d.mock.pstmn.io/api';
 
 const instance = axios.create({
   baseURL: baseURL,
   timeout: 2000 // 응답 대기 최대 시간
+});
+
+instance.interceptors.request.use(config => {
+  const currentUserToken = localStorage.getItem('currentUserToken');
+  config.headers!.Authorization = currentUserToken ? `Bearer ${currentUserToken}` : '';
+  return config;
 });
 
 const handleError = (err: AxiosError) => {
@@ -14,30 +21,23 @@ const handleError = (err: AxiosError) => {
     const { baseURL = '', url = '' } = config;
 
     if (status === 404) {
-      console.log(`${baseURL + url} not found`);
+      console.error(`${baseURL + url} not found`);
     }
 
     if (status === 500) {
-      console.log(`Server error`);
+      console.error(`Server error`);
     }
     return err.response;
   }
 
   if (err.request) {
     // 요청이 전송되었지만, 응답이 수신되지 않았습니다.
-    console.log('Error', err.message);
+    console.error('Error', err.message);
   } else {
-    console.log('Error', err.message);
+    console.error('Error', err.message);
   }
 
   return { data: null, status: null };
-};
-
-type AxiosType = {
-  method: 'get' | 'post' | 'put' | 'delete' | 'patch';
-  url: string;
-  data?: { [key: string]: string };
-  config?: AxiosRequestConfig;
 };
 
 const requestApi = async ({ method, url, data, config }: AxiosType) => {

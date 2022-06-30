@@ -21,7 +21,7 @@ const $FilterBar = styled.div<I$FilterBar>`
 
 const $InputWrapper = styled.div`
   display: flex;
-  padding: 0 24px;
+  padding: 0 11px 0 24px;
   align-items: center;
   flex: 1;
   border-left: 1px solid ${({ theme }) => theme.COLOR.line};
