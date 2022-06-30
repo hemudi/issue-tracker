@@ -9,6 +9,12 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
+  data:
+    web:
+      pageable:
+        one-indexed-parameters: true
+  jackson:
+    property-naming-strategy: SNAKE_CASE
 
 logging:
   level:
@@ -16,7 +22,8 @@ logging:
       hibernate:
         type:
           descriptor:
-            sql: trace
+            sql:
+              BasicBinder: trace
 
 oauth2:
   credentials:
@@ -30,3 +37,9 @@ spring:
     activate:
       on-profile: local
     import: classpath:application-local.yml
+---
+spring:
+  config:
+    activate:
+      on-profile: remote
+    import: classpath:application-remote.yml

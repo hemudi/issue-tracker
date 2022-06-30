@@ -37,9 +37,32 @@ dependencies {
 	// Configuration
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
+	// Querydsl
+	implementation 'com.querydsl:querydsl-jpa:5.0.0'
+	annotationProcessor 'com.querydsl:querydsl-apt:5.0.0:jpa',
+			'javax.persistence:javax.persistence-api',
+			'javax.annotation:javax.annotation-api'
+
+	// openapi
+	implementation 'org.springdoc:springdoc-openapi-ui:1.6.9'
+
+
 	// test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'io.projectreactor:reactor-test'
+}
+
+def generated = 'src/main/generated'
+sourceSets {
+	main.java.srcDirs += [ generated ]
+}
+
+tasks.withType(JavaCompile) {
+	options.annotationProcessorGeneratedSourcesDirectory(file(generated))
+}
+
+clean.doLast {
+	file(generaged).delete()
 }
 
 tasks.named('test') {
