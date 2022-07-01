@@ -8,7 +8,9 @@ import org.codesquad.team34.issuetracker.label.dto.LabelListResponse;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,5 +36,13 @@ public class LabelController {
     @GetMapping("/counts")
     public ResponseEntity<TotalCountResponse> countLabels() {
         return ResponseEntity.ok(labelService.count());
+    }
+
+    @Operation(summary = "라벨 삭제")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteLabel(@PathVariable(name = "id") Long id) {
+        labelService.delete(id);
+
+        return ResponseEntity.noContent().build();
     }
 }
