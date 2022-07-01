@@ -60,4 +60,28 @@ public class Issue extends BaseEntity {
         joinColumns = @JoinColumn(name = "issue_id"),
         inverseJoinColumns = @JoinColumn(name = "label_id"))
     private Set<Label> labels = new HashSet<>();
+
+    protected Issue() {
+
+    }
+
+    public Issue(String title, String body, Member author) {
+        this.title = title;
+        this.body = body;
+        this.author = author;
+
+        this.status = Status.OPEN;
+    }
+
+    public void setMilestone(Milestone milestone) {
+        this.milestone = milestone;
+    }
+
+    public void addAssignees(List<Member> members) {
+        this.assignees.addAll(members);
+    }
+
+    public void addLabels(List<Label> labels) {
+        this.labels.addAll(labels);
+    }
 }
