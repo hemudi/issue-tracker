@@ -17,12 +17,9 @@ public enum Status {
 
     public static Status fromLabel(String label) {
         return Stream.of(Status.values())
-            .filter(status -> status.labelIsEqualTo(label))
+            .filter(status -> status.label.equals(label))
             .findFirst()
             .orElse(null);
     }
 
-    private boolean labelIsEqualTo(String label) {
-        return this.label.equals(label);
-    }
 }

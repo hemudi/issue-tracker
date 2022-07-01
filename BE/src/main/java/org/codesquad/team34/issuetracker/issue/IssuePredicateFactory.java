@@ -8,7 +8,6 @@ import com.querydsl.core.types.dsl.Expressions;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
-import org.codesquad.team34.issuetracker.common.Status;
 import org.codesquad.team34.issuetracker.issue.dto.IssueQueryParams;
 
 public class IssuePredicateFactory {
@@ -33,7 +32,6 @@ public class IssuePredicateFactory {
 
     private BooleanExpression filterByStatus() {
         return Optional.ofNullable(queryParams.getStatus())
-            .map(Status::fromLabel)
             .map(issue.status::eq)
             .orElseGet(this::ignoreThisCondition);
     }

@@ -32,4 +32,9 @@ public class LabelService {
     public TotalCountResponse count() {
         return new TotalCountResponse(labelRepository.count());
     }
+
+    @Transactional
+    public void delete(Long id) {
+        labelRepository.deleteById(id);
+    }
 }

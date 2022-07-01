@@ -27,4 +27,11 @@ public class Milestone extends BaseEntity {
     private LocalDate targetDate;
     private Integer openIssues;
     private Integer closedIssues;
+
+    public Milestone updateIssueCounts(Integer openIssues, Integer closedIssues) {
+        this.openIssues = openIssues;
+        this.closedIssues = closedIssues;
+
+        return this;
+    }
 }
