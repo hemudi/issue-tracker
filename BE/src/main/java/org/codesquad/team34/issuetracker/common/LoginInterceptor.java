@@ -31,6 +31,10 @@ public class LoginInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
         Object handler) {
 
+        if (request.getMethod().equals("OPTIONS")) {
+            return true;
+        }
+
         try {
             LoginToken loginToken = extractLoginToken(request);
             MemberDto memberDto = memberService.findMember(loginToken.getMemberId());
@@ -39,7 +43,8 @@ public class LoginInterceptor implements HandlerInterceptor {
 
             return true;
         } catch (NoSuchElementException | IllegalArgumentException | JwtException e) {
-            log.error("다음 경로에 대한 요청에서 로그인 에러 발생: {}", request.getRequestURI());
+            log.error("다음 경로에 대한 요청에서 로그인 에러 발생: {}, {}",
+                request.getMethod(), request.getRequestURI());
             e.printStackTrace();
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
 
