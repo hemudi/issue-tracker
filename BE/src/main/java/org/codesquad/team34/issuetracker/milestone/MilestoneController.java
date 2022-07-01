@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.codesquad.team34.issuetracker.common.Status;
 import org.codesquad.team34.issuetracker.common.dto.TotalCountResponse;
 import org.codesquad.team34.issuetracker.milestone.dto.MilestoneListResponse;
 import org.springdoc.api.annotations.ParameterObject;
@@ -31,7 +32,7 @@ public class MilestoneController {
     public ResponseEntity<MilestoneListResponse> listMilestones(
         @RequestParam(name = "status", required = false)
         @Parameter(description = "open, closed")
-        String status,
+        Status status,
         @ParameterObject Pageable pageable) {
         return ResponseEntity.ok(milestoneService.findAll(status, pageable));
     }
@@ -40,7 +41,7 @@ public class MilestoneController {
     public ResponseEntity<TotalCountResponse> countMilestones(
         @RequestParam(name = "status", required = false)
         @Parameter(description = "open, closed")
-        String status) {
+        Status status) {
         return ResponseEntity.ok(milestoneService.count(status));
     }
 }

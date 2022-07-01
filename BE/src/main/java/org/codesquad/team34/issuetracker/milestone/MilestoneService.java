@@ -23,7 +23,7 @@ public class MilestoneService {
     }
 
     @Transactional(readOnly = true)
-    public MilestoneListResponse findAll(String status, Pageable pageable) {
+    public MilestoneListResponse findAll(Status status, Pageable pageable) {
         Predicate predicate = createPredicateFromStatus(status);
 
         Page<Milestone> milestones = milestoneRepository.findAll(predicate, pageable);
@@ -36,14 +36,14 @@ public class MilestoneService {
     }
 
     @Transactional(readOnly = true)
-    public TotalCountResponse count(String status) {
+    public TotalCountResponse count(Status status) {
         Predicate predicate = createPredicateFromStatus(status);
 
         return new TotalCountResponse(milestoneRepository.count(predicate));
     }
 
-    private Predicate createPredicateFromStatus(String status) {
-        return Optional.ofNullable(Status.fromLabel(status))
+    private Predicate createPredicateFromStatus(Status status) {
+        return Optional.ofNullable(status)
             .map(milestone.status::eq)
             .orElseGet(Expressions.TRUE::isTrue);
     }
