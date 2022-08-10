@@ -27,7 +27,7 @@
 
 ## 🗂 Wiki
 
-- [Notion](https://sprout-capybara-6f1.notion.site/ISSUE-TRACKER-07b30debb2fe412193470a9591c48389) (회의 및 고민 사항, 회고 등 과정 기록)
+- [Notion](https://hemudi.notion.site/ISSUE-TRACKER-07b30debb2fe412193470a9591c48389) (회의 및 고민 사항, 회고 등 과정 기록)
 - [그라운드룰](https://github.com/jindonyy/issue-tracker/wiki/%F0%9F%8C%8F-Ground-Rules)
 - [협업 전략](https://github.com/jindonyy/issue-tracker/wiki/%F0%9F%8C%B1-%ED%98%91%EC%97%85%EC%A0%84%EB%9E%B5)
 - [Backlog](https://github.com/jindonyy/issue-tracker/wiki/%F0%9F%A6%84-%5BFE%5D-Backlog)
