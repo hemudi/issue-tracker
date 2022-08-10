@@ -2,6 +2,7 @@
 
 - 22.06.13 ~ 07.01
 - 2022 코드스쿼드 마스터즈 마지막 팀 프로젝트
+- 원본 Repository [Link](https://github.com/jindonyy/issue-tracker)
 
 </br>
 
